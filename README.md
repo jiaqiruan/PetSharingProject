@@ -1,105 +1,143 @@
-The content below is an example project proposal / requirements document. Replace the text below the lines marked "__TODO__" with details specific to your project. Remove the "TODO" lines.
+(__TODO__: A Simple Soccer Forum)
 
-(__TODO__: your project name)
-
-# Shoppy Shoperson 
+# Jiaqi Ruan
 
 ## Overview
 
-(__TODO__: a brief one or two paragraph, high-level description of your project)
+Everyone loves soccer! But instead of watching a soccer game, why not create and manipulate a soccer game yourself? Imagine suddenly you have the magical power of deciding every soccer game and it can goes whatever you want, that would be funny, isn't it? After you create a match, it will be published in the website and other user can comment on it!
 
-Remembering what to buy at the grocery store is waaaaay too difficult. Also, shopping for groceries when you're hungry leads to regrettable purchases. Sooo... that's where Shoppy Shoperson comes in!
-
-Shoppy Shoperson is a web app that will allow users to keep track of multiple grocery lists. Users can register and login. Once they're logged in, they can create or view their grocery list. For every list that they have, they can add items to the list or cross off items.
-
+The cooooooolest thing about it is that all of these crazy games will be recorded! Just like a real life soccer forum, you can view all the stats of these crazy games created by magcial people like you in the website. And of course, player performance (goals, assists) will also be recorded and you can also view them in the website. In conclusion, it basically does all the things that a normal soccer forum does (displaying stats about matches, players and teams), but the source of the stat comes from user's creation rather than reality. 
 
 ## Data Model
 
-(__TODO__: a description of your application's data and their relationships to each other) 
+The application will store Users, Matches, Comments, MatchActions, Teams, and Players
 
-The application will store Users, Lists and Items
-
-* users can have multiple lists (via references)
-* each list can have multiple items (by embedding)
-
-(__TODO__: sample documents)
+* Each User can have multiple matches they created (via reference for now) and comment they posted (also via refernce for now)
+* Each Match can have two teams, home and away, (via embedded). And a list of MatchAction (via embedded). It should also have a list of comment from users, and of course, the user who create the match
+* Each Comment will have a user (whoever post it), and a match(via reference)
+* Each MatchAction will have a type(goal, assist, block-goal), a match that this action happened in (via reference), a time that the action happen (90 minutes of the match), and which player this MatchAction belong to.
+* Each Teams will have a list of Players (via reference), and a team stat for all MatchActions.
+* Each Players will have a team they play for (via reference), and they personal stats of their own MatchAction, and of course basic information. 
 
 An Example User:
 
 ```javascript
 {
-  username: "shannonshopper",
+  username: "jiaqiruan",
   hash: // a password hash,
-  lists: // an array of references to List documents
+  matches: // an array of references to Match documents,
+  comments: //an array of references to Comment documents,
 }
 ```
 
-An Example List with Embedded Items:
+An Example Match:
 
 ```javascript
 {
-  user: // a reference to a User object
-  name: "Breakfast foods",
-  items: [
-    { name: "pancakes", quantity: "9876", checked: false},
-    { name: "ramen", quantity: "2", checked: true},
-  ],
-  createdAt: // timestamp
+  hometeam: //hometeam name,
+  awayteam: //awayteam name,
+  matchActions: //an array of references to MatchAction documents,
+  user: //reference to User documents,
+}
+```
+An Example Comment:
+
+```javascript
+{
+  match: //reference to Match documents,
+  user: //reference to User documents,
+}
+```
+An Example MatchAction:
+
+```javascript
+{
+  type: "goal",
+  match: //a reference to a Match document
+  time: 90,
+  player://a reference to a Player document
+}
+```
+
+An Example Team:
+
+```javascript
+{
+  name: "Real Madirid",
+  players: //a array of reference to Player documents,
+  totalGoals: 100,
+  totalAssists: 100,
+  totalBlockGoals: 100,
+}
+```
+An Example Player:
+
+```javascript
+{
+  name: "Christinao Ronaldo",
+  team: //a reference to Team documents,
+  birthday://a date type data
+  height: 189,
+  weight: 180,
+  matchActions://an array of reference to matchAction documents
 }
 ```
 
 
 ## [Link to Commented First Draft Schema](db.mjs) 
 
-(__TODO__: create a first draft of your Schemas in db.mjs and link to it)
 
 ## Wireframes
 
 (__TODO__: wireframes for all of the pages on your site; they can be as simple as photos of drawings or you can use a tool like Balsamiq, Omnigraffle, etc.)
 
-/list/create - page for creating a new shopping list
+/match - page for showing all matches
+![match](documentation/match.png)
 
-![list create](documentation/list-create.png)
+/match/create - page for creating a new match
 
-/list - page for showing all shopping lists
+![match create](documentation/match_create.png)
 
-![list](documentation/list.png)
+/match/view - page for viewing a match
 
-/list/slug - page for showing specific shopping list
+![match view](documentation/match_view.png)
 
-![list](documentation/list-slug.png)
+/player - page for showing all players
+![player](documentation/player.png)
+
+/player/view - page for showing player information
+
+![player view](documentation/player_view.png)
+
+/team - page for showing all teams
+![team](documentation/team.png)
+
+/team/view - page for showing team information
+
+![team view](documentation/team_view.png)
 
 ## Site map
 
-(__TODO__: draw out a site map that shows how pages are related to each other)
-
-Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia/commons/2/20/Sitemap_google.jpg), but you can create one without the screenshots, drop shadows, etc. ... just names of pages and where they flow to.
-
+[sitemap](documentation/sitemap.png)
 ## User Stories or Use Cases
-
-(__TODO__: write out how your application will be used through [user stories](http://en.wikipedia.org/wiki/User_story#Format) and / or [use cases](https://en.wikipedia.org/wiki/Use_case))
 
 1. as non-registered user, I can register a new account with the site
 2. as a user, I can log in to the site
-3. as a user, I can create a new grocery list
-4. as a user, I can view all of the grocery lists I've created in a single list
-5. as a user, I can add items to an existing grocery list
-6. as a user, I can cross off items in an existing grocery list
+3. as a user, I can create a new match-up and post it
+4. as a user, I can add matchAction to a match
+5. as a user, I can post comments on existing matches
+6. as a user, I can view stats of teams and players
 
 ## Research Topics
 
-(__TODO__: the research topics that you're planning on working on along with their point values... and the total points of research topics listed)
-
-* (5 points) Integrate user authentication
-    * I'm going to be using passport for user authentication
-    * And account has been made for testing; I'll email you the password
-    * see <code>cs.nyu.edu/~jversoza/ait-final/register</code> for register page
-    * see <code>cs.nyu.edu/~jversoza/ait-final/login</code> for login page
+* (5 points) CSS modules
+    * I want to learn and pratice using css modules so I think it will be a good fit if I add it to my project
+    * using Sass
 * (4 points) Perform client side form validation using a JavaScript library
-    * see <code>cs.nyu.edu/~jversoza/ait-final/my-form</code>
-    * if you put in a number that's greater than 5, an error message will appear in the dom
-* (5 points) vue.js
-    * used vue.js as the frontend framework; it's a challenging library to learn, so I've assigned it 5 points
+    * if the match score is impossible, (100:200), an error message will appear in the dom
+    * 
+* (5 points) React
+    * used React as the frontend framework; it's a challenging library to learn, so I've assigned it 5 points
 
 10 points total out of 8 required points (___TODO__: addtional points will __not__ count for extra credit)
 
@@ -111,7 +149,4 @@ Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia
 ## Annotations / References Used
 
 (__TODO__: list any tutorials/references/etc. that you've based your code off of)
-
-1. [passport.js authentication docs](http://passportjs.org/docs) - (add link to source code that was based on this)
-2. [tutorial on vue.js](https://vuejs.org/v2/guide/) - (add link to source code that was based on this)
 
