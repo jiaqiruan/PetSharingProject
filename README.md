@@ -1,23 +1,21 @@
-(__TODO__: A Simple Soccer Forum)
+(__TODO__: A Digital Pets Forum)
 
 # Jiaqi Ruan
 
 ## Overview
 
-Everyone loves soccer! But instead of watching a soccer game, why not create and manipulate a soccer game yourself? Imagine suddenly you have the magical power of deciding every soccer game and it can goes whatever you want, that would be funny, isn't it? After you create a match, it will be published in the website and other user can comment on it!
+Everyone loves pets! But instead of having a real pet which you have to worry about all the messy stuff related to taking care of a pet, why not just have a digital, virtual pet? In this website, you can choose your own digital pet and enjoy the company of pets without doing actual petkeeping work! 
 
-The cooooooolest thing about it is that all of these crazy games will be recorded! Just like a real life soccer forum, you can view all the stats of these crazy games created by magcial people like you in the website. And of course, player performance (goals, assists) will also be recorded and you can also view them in the website. In conclusion, it basically does all the things that a normal soccer forum does (displaying stats about matches, players and teams), but the source of the stat comes from user's creation rather than reality. 
+No only can you choose pets from pre-set base, you can also create your own pet by uploading photos and customize everything about the pet! After you create or choose a pet, you can interact with it by many ways. The pet will be "Hungry" overtime so you need to feed them. The pet will get "Bored" so you need to play with them. Also, you can check other's pet and interact with them too! 
 
 ## Data Model
 
-The application will store Users, Matches, Comments, MatchActions, Teams, and Players
+The application will store Users, Pets, Foods, Toys
 
-* Each User can have multiple matches they created (via reference for now) and comment they posted (also via refernce for now)
-* Each Match can have two teams, home and away, (via embedded). And a list of MatchAction (via embedded). It should also have a list of comment from users, and of course, the user who create the match
-* Each Comment will have a user (whoever post it), and a match(via reference)
-* Each MatchAction will have a type(goal, assist, block-goal), a match that this action happened in (via reference), a time that the action happen (90 minutes of the match), and which player this MatchAction belong to.
-* Each Teams will have a list of Players (via reference), and a team stat for all MatchActions.
-* Each Players will have a team they play for (via reference), and they personal stats of their own MatchAction, and of course basic information. 
+* Each User can have one or more pets. Each user will have coins that they can buy Foods and Toys (and also Pets of course) from virtual store. Each user will have two arrays representing the Foods and Toys that the User is currently holding.
+* Each Pet have its basic stats (name, species, photos, age...) and also virtual pet stats. A hunger stat representing how hungry the pet is, and a mood stat representing the mood of the pet. And of course, the owner who owns them.
+* Each Food have a price in coins and the amount of hunger stat it can increase. 
+* Each Toy have a price in coins and the amount of mood stat it can increase.
 
 An Example User:
 
@@ -25,64 +23,42 @@ An Example User:
 {
   username: "jiaqiruan",
   hash: // a password hash,
-  matches: // an array of references to Match documents,
-  comments: //an array of references to Comment documents,
+  coins: 20 //number of coins that the user process
+  pets: //an array of references to Pet documents,
+  foods: //an embedded array of Food,
+  toys: //an embedded array of Toy,
 }
 ```
 
-An Example Match:
+An Example Pet:
 
 ```javascript
 {
-  hometeam: //hometeam name,
-  awayteam: //awayteam name,
-  matchActions: //an array of references to MatchAction documents,
-  user: //reference to User documents,
+  name: "kitty",//name of the pet
+  age:3,
+  category:"cat",
+  photo: "",//link of the photo
+  hunger: 80,//hunger stat, maximum 100
+  mood: 60,//mood stat, maximum 100
+  owner://reference to the User document,
 }
 ```
-An Example Comment:
+An Example Food:
 
 ```javascript
 {
-  match: //reference to Match documents,
-  user: //reference to User documents,
+  price: 100,
+  fullness: 10,
 }
 ```
-An Example MatchAction:
+An Example Toy:
 
 ```javascript
 {
-  type: "goal",
-  match: //a reference to a Match document
-  time: 90,
-  player://a reference to a Player document
+  price: 20,
+  joyness: 10,
 }
 ```
-
-An Example Team:
-
-```javascript
-{
-  name: "Real Madirid",
-  players: //a array of reference to Player documents,
-  totalGoals: 100,
-  totalAssists: 100,
-  totalBlockGoals: 100,
-}
-```
-An Example Player:
-
-```javascript
-{
-  name: "Christinao Ronaldo",
-  team: //a reference to Team documents,
-  birthday://a date type data
-  height: 189,
-  weight: 180,
-  matchActions://an array of reference to matchAction documents
-}
-```
-
 
 ## [Link to Commented First Draft Schema](db.mjs) 
 
@@ -91,30 +67,27 @@ An Example Player:
 
 (__TODO__: wireframes for all of the pages on your site; they can be as simple as photos of drawings or you can use a tool like Balsamiq, Omnigraffle, etc.)
 
-/match - page for showing all matches
-![match](documentation/match.png)
+/pets - for showing all pets
+![pets](documentation/pets.png)
 
-/match/create - page for creating a new match
+/pets/view - page for viewing a specific pet
 
-![match create](documentation/match_create.png)
+![pets view](documentation/pet_view.png)
 
-/match/view - page for viewing a match
+/pets/create - page for creating a pet
+![pet create](documentation/pet_create.png)
 
-![match view](documentation/match_view.png)
+/pets/choose - page for buying a pet
+![pet choose](documentation/pet_choose.png)
 
-/player - page for showing all players
-![player](documentation/player.png)
+/user - page for user profile
+![user](documentation/user.png)
 
-/player/view - page for showing player information
+/toy - page for buying toys
+![toy](documentation/toy.png)
 
-![player view](documentation/player_view.png)
-
-/team - page for showing all teams
-![team](documentation/team.png)
-
-/team/view - page for showing team information
-
-![team view](documentation/team_view.png)
+/food - page for buying foods
+![food](documentation/food.png)
 
 ## Site map
 
@@ -123,19 +96,20 @@ An Example Player:
 
 1. as non-registered user, I can register a new account with the site
 2. as a user, I can log in to the site
-3. as a user, I can create a new match-up and post it
-4. as a user, I can add matchAction to a match
-5. as a user, I can post comments on existing matches
-6. as a user, I can view stats of teams and players
+3. as a user, I can create a new pet 
+4. as a user, I can buy a pet from the store
+5. as a user, I can buy foods from the store
+6. as a user, I can buy toys from the store
+7. as a user, I can feed and give toy to my own pet
+8. as a user, I can look at other's pet and play with them
 
 ## Research Topics
 
 * (5 points) CSS modules
     * I want to learn and pratice using css modules so I think it will be a good fit if I add it to my project
     * using Sass
-* (4 points) Perform client side form validation using a JavaScript library
-    * if the match score is impossible, (100:200), an error message will appear in the dom
-    * 
+* (5 points) Redux
+    * Redux is a great tool for managin states, (in my case the user's coins, the pets' hunger and mood stats), so I decided to learn it and use it
 * (5 points) React
     * used React as the frontend framework; it's a challenging library to learn, so I've assigned it 5 points
 
