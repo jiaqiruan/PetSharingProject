@@ -1,1 +1,20 @@
-<h2>Home!</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Age</th>
+        <th>Photo</th>
+        <th>Hunger</th>
+        <th>Mood</th>
+    </tr>
+    {{#each pets}}
+    <tr>
+        <td>{{name}} </td>
+        <td>{{category}} </td>
+        <td>{{age}} </td>
+        <td>{{photo}} </td>
+        <td>{{hunger}} </td>
+        <td>{{mood}} </td>
+    </tr>
+    {{/each}}
+</table>

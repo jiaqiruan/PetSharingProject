@@ -24,10 +24,10 @@ const PetSchema = new mongoose.Schema({
     photo: String,
     hunger: Number,
     mood: Number,
-    owner: {
+    /*owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-    },
+    },*/
 });
 mongoose.model('Pet',PetSchema);
 
