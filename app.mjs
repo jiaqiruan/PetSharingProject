@@ -33,6 +33,20 @@ app.get('/add',(req,res)=>{
     res.render('add');
 });
 
+app.post('/add',async (req,res)=>{
+    const newPet = new Pet({
+        name:req.body.petName,
+        category:req.body.petCategory,
+        age:req.body.petAge,
+        photo:req.body.petPhoto,
+        hunger: 80,
+        mood: 60,
+    });
+    const savedPet = await newPet.save();
+    console.log(savedPet);
+    res.redirect('/');
+});
+
 app.get('/api/data', (req, res) => {
     // Your API logic here
     console.log("Get!");
