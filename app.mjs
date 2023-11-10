@@ -29,7 +29,7 @@ app.get('/', async (req,res)=>{
     res.render('home',{pets:pets});
 });
 
-app.get('add',(req,res)=>{
+app.get('/add',(req,res)=>{
     res.render('add');
 });
 
