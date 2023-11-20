@@ -1,7 +1,8 @@
 import './config.mjs';
 import mongoose from 'mongoose';
 //console.log(process.env.DSN);
-mongoose.connect(process.env.DSN);
+//mongoose.connect(process.env.DSN);
+mongoose.connect(process.env.LOCAL);
 // my schema goes here!
 const UserSchema = new mongoose.Schema({
     username: String,
@@ -22,14 +23,24 @@ const PetSchema = new mongoose.Schema({
     category: String,
     age: Number,
     photo: String,
-    hunger: Number,
-    mood: Number,
+    hunger: {
+        type:Number,
+        min: [0, 'min hunger stat is 0'],
+        max: [100, 'max hunger stat is 100'],
+        default: 50,
+    },
+    mood: {
+        type:Number,
+        min: [0, 'min mood stat is 0'],
+        max: [100, 'max mood stat is 100'],
+        default: 50,
+    },
     /*owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },*/
 });
-mongoose.model('Pet',PetSchema);
+var petMessage = mongoose.model('Pet',PetSchema);
 
 const FoodSchema = new mongoose.Schema({
     name: String,
@@ -46,3 +57,4 @@ const ToySchema = new mongoose.Schema({
 mongoose.model('Toy',ToySchema);
 
 
+export default petMessage;

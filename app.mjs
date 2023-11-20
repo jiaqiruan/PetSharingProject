@@ -5,15 +5,20 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import mongoose from 'mongoose';
-
+import postRoutes from './routes/posts.mjs';
+import bodyParser from 'body-parser';
 const Pet = mongoose.model('Pet');
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, 'client/public')));
-console.log(__dirname);
+
+//app.use(express.static(path.join(__dirname, 'client/public')));
+//console.log(__dirname);
+
 app.set('view engine', 'hbs');
+app.use(bodyParser.json({ limit: '30mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
     origin: '*', // You can set this to a specific origin
@@ -23,6 +28,10 @@ app.use(cors({
     exposedHeaders: 'X-Custom-Header',
     maxAge: 3600,
 }));
+
+
+app.use('/posts',postRoutes);
+
 
 app.get('/', async (req,res)=>{
     const pets = await Pet.find();
@@ -39,11 +48,9 @@ app.post('/add',async (req,res)=>{
         category:req.body.petCategory,
         age:req.body.petAge,
         photo:req.body.petPhoto,
-        hunger: 80,
-        mood: 60,
     });
     const savedPet = await newPet.save();
-    console.log(savedPet);
+    //console.log(savedPet);
     res.redirect('/');
 });
 

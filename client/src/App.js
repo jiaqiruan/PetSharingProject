@@ -1,32 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect} from "react";
 
-function App() {
-  const [data, setData] = useState('Initial Data');
-  const a = 1+2;
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('http://linserv1.cims.nyu.edu:21979/api/data');
-        const result = await response.json();
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        setData(result.message);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchData();
-  }, [data]);
+import { Container, AppBar, Typography, Grow , Grid } from '@material-ui/core';
+import {getPosts} from './actions/posts';
+import pets from './images/pet.png';
+import {useDispatch} from "react-redux";
+import Posts from "./components/Posts/Posts";
+import Form from "./components/Form/Form";
+import useStyles from "./styles";
+const App = ()=>{
+    const classes = useStyles();
+    const dispatch = useDispatch();
 
-  return (
-    <div className="App">
-      <h1>{data}</h1>
-      <h3>{a}</h3>
-    </div>
-  );
+    useEffect(()=>{
+        dispatch(getPosts());
+    },[dispatch]);
+
+    return (
+        <Container maxidth="lg">
+            <AppBar className={classes.appBar} position="static" color="inherit">
+                <Typography className={classes.heading} variant="h2" align="center">Pets!</Typography>
+                <img className={classes.image} src={pets} alt="pets" height="60" width="90"/>
+            </AppBar>
+            <Grow in>
+                <Container>
+                    <Grid container justify="space-between" alignItems="stretch" space={3}>
+                        <Grid item xs={12} sm={7}>
+                            <Posts />
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <Form />
+                        </Grid>
+                    </Grid>
+                </Container>
+            </Grow>
+        </Container>
+    );
 }
 
 export default App;
