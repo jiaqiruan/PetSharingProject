@@ -121,7 +121,8 @@ An Example Toy:
 
 ## Annotations / References Used
 
-(__TODO__: list any tutorials/references/etc. that you've based your code off of)
+https://www.youtube.com/watch?v=aibtHnbeuio&t=124s
+https://github.com/adrianhajdin/project_mern_memories/tree/PART_1_and_2
 
 ## Milestone 3
 
