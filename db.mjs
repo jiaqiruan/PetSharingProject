@@ -1,8 +1,8 @@
 import './config.mjs';
 import mongoose from 'mongoose';
-//console.log(process.env.DSN);
-//mongoose.connect(process.env.DSN);
-mongoose.connect(process.env.LOCAL);
+console.log(process.env.DSN);
+mongoose.connect(process.env.DSN);
+//mongoose.connect(process.env.LOCAL);
 // my schema goes here!
 const UserSchema = new mongoose.Schema({
     username: String,
@@ -40,7 +40,7 @@ const PetSchema = new mongoose.Schema({
         ref: 'User',
     },*/
 });
-var petMessage = mongoose.model('Pet',PetSchema);
+const petMessage = mongoose.model('Pet',PetSchema);
 
 const FoodSchema = new mongoose.Schema({
     name: String,

@@ -7,7 +7,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import postRoutes from './routes/posts.mjs';
 import bodyParser from 'body-parser';
-const Pet = mongoose.model('Pet');
+import petMessage from './db.mjs';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -20,21 +20,22 @@ app.set('view engine', 'hbs');
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({
+app.use(cors());
+/*app.use(cors({
     origin: '*', // You can set this to a specific origin
-    methods: 'GET,POST,PUT,DELETE',
+    methods: 'GET,POST,PUT,DELETE,PATCH',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true,
     exposedHeaders: 'X-Custom-Header',
     maxAge: 3600,
-}));
+}));*/
 
 
 app.use('/posts',postRoutes);
 
 
 app.get('/', async (req,res)=>{
-    const pets = await Pet.find();
+    const pets = await petMessage.find();
     res.render('home',{pets:pets});
 });
 
@@ -52,12 +53,6 @@ app.post('/add',async (req,res)=>{
     const savedPet = await newPet.save();
     //console.log(savedPet);
     res.redirect('/');
-});
-
-app.get('/api/data', (req, res) => {
-    // Your API logic here
-    console.log("Get!");
-    res.json({ message: 'Hello from Express!' });
 });
 
 //app.listen(3000);
