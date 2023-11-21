@@ -33,10 +33,11 @@ app.use(cors());
 
 app.use('/posts',postRoutes);
 
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 
 app.get('/', async (req,res)=>{
-    const pets = await petMessage.find();
-    res.render('home',{pets:pets});
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 app.get('/add',(req,res)=>{
