@@ -105,9 +105,8 @@ An Example Toy:
 
 ## Research Topics
 
-* (5 points) CSS modules
-    * I want to learn and pratice using css modules so I think it will be a good fit if I add it to my project
-    * using Sass
+* (4 points) ui-material
+    * using ui-material core to create simply ui layout
 * (5 points) Redux
     * Redux is a great tool for managin states, (in my case the user's coins, the pets' hunger and mood stats), so I decided to learn it and use it
 * (5 points) React
@@ -124,3 +123,6 @@ An Example Toy:
 
 (__TODO__: list any tutorials/references/etc. that you've based your code off of)
 
+## Milestone 3
+
+progress: Using React, Redux and material-ui to create a fully interactive website of upload pets, deleting pets and feeding pets. Please see the client folder for all the code for the front-end React and Redux FrameWork.
