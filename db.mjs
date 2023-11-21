@@ -1,7 +1,7 @@
 import './config.mjs';
 import mongoose from 'mongoose';
-console.log(process.env.DSN);
-mongoose.connect(process.env.DSN);
+//console.log(process.env.PORT);
+mongoose.connect(process.env.MONGO);
 //mongoose.connect(process.env.LOCAL);
 // my schema goes here!
 const UserSchema = new mongoose.Schema({
