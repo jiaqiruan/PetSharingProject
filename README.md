@@ -10,23 +10,19 @@ No only can you choose pets from pre-set base, you can also create your own pet 
 
 ## Data Model
 
-The application will store Users, Pets, Foods, Toys
+The application will store Users, Pets
 
-* Each User can have one or more pets. Each user will have coins that they can buy Foods and Toys (and also Pets of course) from virtual store. Each user will have two arrays representing the Foods and Toys that the User is currently holding.
+* Each User can have one or more pets. Each user will have coins that they can use to increase the hunger stat of the Pet. 
 * Each Pet have its basic stats (name, species, photos, age...) and also virtual pet stats. A hunger stat representing how hungry the pet is, and a mood stat representing the mood of the pet. And of course, the owner who owns them.
-* Each Food have a price in coins and the amount of hunger stat it can increase. 
-* Each Toy have a price in coins and the amount of mood stat it can increase.
 
 An Example User:
 
 ```javascript
 {
   username: "jiaqiruan",
-  hash: // a password hash,
+  password: // a password hash,
   coins: 20 //number of coins that the user process
-  pets: //an array of references to Pet documents,
-  foods: //an embedded array of Food,
-  toys: //an embedded array of Toy,
+  email: "123@nyu.edu"
 }
 ```
 
@@ -37,28 +33,13 @@ An Example Pet:
   name: "kitty",//name of the pet
   age:3,
   category:"cat",
-  photo: "",//link of the photo
+  photo: "",
   hunger: 80,//hunger stat, maximum 100
   mood: 60,//mood stat, maximum 100
-  owner://reference to the User document,
+  owner://String
 }
 ```
-An Example Food:
 
-```javascript
-{
-  price: 100,
-  fullness: 10,
-}
-```
-An Example Toy:
-
-```javascript
-{
-  price: 20,
-  joyness: 10,
-}
-```
 
 ## [Link to Commented First Draft Schema](db.mjs) 
 
@@ -67,41 +48,25 @@ An Example Toy:
 
 (__TODO__: wireframes for all of the pages on your site; they can be as simple as photos of drawings or you can use a tool like Balsamiq, Omnigraffle, etc.)
 
-/pets - for showing all pets
-![pets](documentation/pets.png)
+/home - page for all interaction
+![pets](documentation/home.png)
 
-/pets/view - page for viewing a specific pet
+/auth - page authentication
+![auth](documentation/auth.png)
 
-![pets view](documentation/pet_view.png)
 
-/pets/create - page for creating a pet
-![pet create](documentation/pet_create.png)
-
-/pets/choose - page for buying a pet
-![pet choose](documentation/pet_choose.png)
-
-/user - page for user profile
-![user](documentation/user.png)
-
-/toy - page for buying toys
-![toy](documentation/toy.png)
-
-/food - page for buying foods
-![food](documentation/food.png)
 
 ## Site map
 
-[sitemap](documentation/sitemap.png)
+
 ## User Stories or Use Cases
 
 1. as non-registered user, I can register a new account with the site
-2. as a user, I can log in to the site
-3. as a user, I can create a new pet 
-4. as a user, I can buy a pet from the store
-5. as a user, I can buy foods from the store
-6. as a user, I can buy toys from the store
-7. as a user, I can feed and give toy to my own pet
-8. as a user, I can look at other's pet and play with them
+2. as non-registered user, I can viwe other's pets
+3. as a user, I can log in to the site
+4. as a user, I can create a new pet 
+5. as a user, I can delete and edit my pets
+6. as a user, I can feed my pets and other's pets
 
 ## Research Topics
 
