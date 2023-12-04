@@ -11,6 +11,16 @@ import { deletePost ,feedPost} from "../../../actions/posts";
 const Post = ({post,setCurrentId})=>{
     const classes = useStyles();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
+    const handleFeed = ()=>{
+
+        const oldProfile = JSON.parse(localStorage.getItem('profile'));
+        oldProfile.result.coins--;
+        console.log(oldProfile);
+        localStorage.setItem('profile', JSON.stringify(oldProfile));
+        window.location.reload(false);
+        dispatch(feedPost(post._id))
+    }
     return(
         <Card className={classes.card}>
             <CardMedia className={classes.media} image={post.photo} title={post.name}/>
@@ -18,20 +28,25 @@ const Post = ({post,setCurrentId})=>{
                 <Typography variant="h6">{post.name}</Typography>
                 <Typography variant="body2">Age: {post.age}</Typography>
                 <Typography variant="body2">Category: {post.category}</Typography>
+                <Typography variant="body2">Owner: {post.owner}</Typography>
             </div>
-            <div className={classes.overlay2}>
-                <Button style={{color:'white'}} size="small" onClick={()=>{setCurrentId(post._id)}}>
-                    <MoreHorizIcon fontSize="default"></MoreHorizIcon>
-                </Button>
-            </div>
-            <Typography className={classes.title} gutterBottom variant="h5" component="h2">{post.name} is Hungry!</Typography>
+            {(user?.result?.googleId === post?.creatorId || user?.result?._id === post?.creatorId) && (
+                <div className={classes.overlay2}>
+                    <Button style={{color:'white'}} size="small" onClick={()=>{setCurrentId(post._id)}}>
+                        <MoreHorizIcon fontSize="medium"></MoreHorizIcon>
+                    </Button>
+                </div>
+            )}
+            <Typography className={classes.title} gutterBottom variant="h5" component="h2">{post.name} {post.hunger>=70 ?"is Satisfied!" : "is Hungry"}</Typography>
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">Hunger Stat: {post.hunger}</Typography>
                 <Typography variant="body2" color="textSecondary" component="p">Mood Stat: {post.mood}</Typography>
             </CardContent>
             <CardActions className={classes.cardActions}>
-                <Button size="small" color="primary" onClick={() => dispatch(feedPost(post._id))}><RestaurantIcon fontSize="small" /> Feed </Button>
-                <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}><PetsIcon fontSize="small" /> Delete</Button>
+                <Button size="small" color="primary" disabled={!user?.result} onClick={handleFeed}><RestaurantIcon fontSize="small" /> Feed </Button>
+                {(user?.result?.googleId === post?.creatorId || user?.result?._id === post?.creatorId) && (
+                    <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}><PetsIcon fontSize="small" /> Delete</Button>
+                )}
             </CardActions>
         </Card>
     );

@@ -12,14 +12,15 @@ import {useSelector} from 'react-redux';
 const Form = ({currentId, setCurrentId})=>{
     const post = useSelector((state)=>currentId ? state.posts.find((p)=>p._id === currentId ):null);
     const [postData,setPostData] = useState({
-        name:'', category:'', photo:'',age:0
+        name:'', category:'', photo:'',age:0,owner:""
     });
     const classes = useStyles();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     useEffect(()=>{
         if(post){
-            console.log(post);
+            //console.log(post);
             setPostData(post);
         }
     },[post]);
@@ -30,6 +31,7 @@ const Form = ({currentId, setCurrentId})=>{
     };
 
     const handleSubmit = (e)=>{
+        postData.owner = user.result.name;
         e.preventDefault();
         if(currentId){
             dispatch(updatePost(currentId,postData));
@@ -38,6 +40,17 @@ const Form = ({currentId, setCurrentId})=>{
         }
         clear();
     };
+
+
+    if (!user?.result?.name) {
+        return (
+          <Paper className={classes.paper}>
+            <Typography variant="h6" align="center">
+              Please Sign In to create your own pets and play with others' pets.
+            </Typography>
+          </Paper>
+        );
+    }
 
     return(
         <Paper className={classes.paper}>

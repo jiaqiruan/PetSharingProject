@@ -1,17 +1,25 @@
 import axios from 'axios';
+const url = "http://linserv1.cims.nyu.edu:21979";
+const API = axios.create({ baseURL: url });
 
-//const url = "http://localhost:21979/posts";
-const url = "http://linserv1.cims.nyu.edu:21979/posts";
 
-export const fetchPosts = ()=>axios.get(url);
 
-export const createPost = (newPost) => {
-    //console.log(newPost);
-    return axios.post(url, newPost);
+API.interceptors.request.use((req) => {
+    if (localStorage.getItem('profile')) {
+      req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
+    }
+    return req;
+});
+
+export const fetchPosts = () => API.get('/posts');
+export const createPost = (newPost) => API.post('/posts', newPost);
+
+export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
+export const deletePost = (id) => API.delete(`/posts/${id}`);
+
+export const feedPost = (id) => API.patch(`/posts/${id}/feedPost`);
+
+export const signIn = (formData) => API.post('/user/signin', formData);
+export const signUp = (formData) => {
+    return API.post('/user/signup', formData)
 };
-
-export const updatePost = (id,updatedPost)=>axios.patch(`${url}/${id}`,updatedPost);
-
-export const deletePost = (id) => axios.delete(`${url}/${id}`);
-
-export const feedPost = (id)=>axios.patch(`${url}/${id}/feedPost`);

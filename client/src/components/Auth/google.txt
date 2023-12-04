@@ -1,0 +1,11 @@
+<GoogleLogin
+            clientId="776592567934-v7pckbtg7mptdnsnhpq6916896bmkkje.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <Button className={classes.googleButton} color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
+                Google Sign In
+              </Button>
+            )}
+            onSuccess={googleSuccess}
+            onFailure={googleError}
+            cookiePolicy="single_host_origin"
+          />

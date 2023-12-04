@@ -5,18 +5,17 @@ mongoose.connect(process.env.DSN);
 //mongoose.connect(process.env.LOCAL);
 // my schema goes here!
 const UserSchema = new mongoose.Schema({
-    username: String,
-    hash: String,
-    coins: Number,
+    name: {type: String,required:true},
+    email: {type: String, required: true},
+    password: {type: String, required: true},
+    coins: {type: Number, default: 100},
     pets:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Pet',
     },
-    foods:Array,
-    toys:Array,
-    comments: Array,
+    id: String,
 });
-mongoose.model('User',UserSchema);
+export const userMessage = mongoose.model('User',UserSchema);
 
 const PetSchema = new mongoose.Schema({
     name: String,
@@ -35,26 +34,12 @@ const PetSchema = new mongoose.Schema({
         max: [100, 'max mood stat is 100'],
         default: 50,
     },
-    /*owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },*/
+    owner: {
+        type: String,
+    },
+    creatorId: String,
 });
+
 const petMessage = mongoose.model('Pet',PetSchema);
-
-const FoodSchema = new mongoose.Schema({
-    name: String,
-    price: Number,
-    fullness: Number,
-});
-mongoose.model('Food',FoodSchema);
-
-const ToySchema = new mongoose.Schema({
-    name: String,
-    price: Number,
-    joyness: Number,
-});
-mongoose.model('Toy',ToySchema);
-
 
 export default petMessage;

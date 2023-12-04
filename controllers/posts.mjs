@@ -1,4 +1,5 @@
 import petMessage from "../db.mjs";
+import { userMessage } from "../db.mjs";
 import express from 'express';
 import mongoose from 'mongoose';
 const router = express.Router();
@@ -25,10 +26,9 @@ export const getPost = async (req, res) => {
 }
 
 export const createPost = async (req,res)=>{
-    const {name,age,photo,category} = req.body;
-    console.log("???");
-    console.log(req);
-    const newPet = new petMessage({name,age,photo,category});
+    const {name,age,photo,category,owner} = req.body;
+    const newPet = new petMessage({name,age,photo,category,owner,creatorId: req.userId});
+    console.log(newPet);
     try {
         await newPet.save();
         res.status(201).json(newPet);
@@ -67,11 +67,23 @@ export const deletePost = async (req, res) => {
 export const feedPost = async (req, res) => {
     const { id } = req.params;
 
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated" });
+    }
+    else{
+        const user = await userMessage.findById(req.userId);
+        if(user.coins<=0){
+            return res.json({message:"Not enough coin!"});
+        } else{
+            const updatedUser = await userMessage.findByIdAndUpdate(req.userId,{coins: user.coins - 1},{new:true});
+        }
+    }
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
     
     const post = await petMessage.findById(id);
 
-    const updatedPost = await petMessage.findByIdAndUpdate(id, { hunger: post.hunger + 1 }, { new: true });
+    const updatedPost = await petMessage.findByIdAndUpdate(id, { hunger: post.hunger + 5 }, { new: true });
     
     res.json(updatedPost);
 }
